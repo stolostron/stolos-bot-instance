@@ -1,11 +1,12 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
-echo "cve-bot-instance" > /home/botuser/app/.instance-id
+APP_DIR="${APP_DIR:-/home/botuser/app}"
 
-# Instance-specific packages go here:
-# dnf --disableplugin=subscription-manager --disablerepo='*' --enablerepo='ubi-*' install -y --nodocs <package>
-# pip3.12 install <package>
-# npm install -g <package>
+shopt -s nullglob
+for profile_setup in "$APP_DIR"/instance/*/setup.sh; do
+    echo "Running profile build hook: ${profile_setup#"$APP_DIR"/}"
+    bash "$profile_setup"
+done
 
-echo "Instance setup complete: cve-bot-instance"
+echo "Runner image setup complete"

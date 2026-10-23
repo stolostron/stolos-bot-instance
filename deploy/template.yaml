@@ -1,7 +1,7 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
-  name: rehor-cve
+  name: stolos-bot-instance
 parameters:
 - name: NAMESPACE
   required: true
@@ -10,7 +10,10 @@ parameters:
 - name: BOT_IMAGE_DIGEST
   required: true
 - name: BOT_NAME
-  value: devbot-stolostron-cve
+  value: devbot-instance
+- name: BOT_EXECUTION_ENGINE
+  description: Runner engine; coordinator supports Claude and OpenCode runtimes.
+  value: coordinator
 - name: BOT_LABEL
   required: true
 - name: BOT_INSTANCE_ID
@@ -33,17 +36,20 @@ parameters:
 - name: SLACK_WEBHOOK_URL
   value: ""
 - name: GCP_PROJECT_ID
-  required: true
+  description: Required when using the Vertex provider.
+  value: ""
 - name: GCP_REGION
-  required: true
+  description: Vertex region; ignored by non-Vertex providers.
+  value: global
 - name: VERTEX_ALLOWED_MODELS
-  required: true
+  description: Required when using the Vertex provider.
+  value: ""
 - name: KEDA_TIMEZONE
-  value: "America/New_York"
+  value: Etc/UTC
 - name: KEDA_CRON_START
   value: "0 9 * * 1-5"
 - name: KEDA_CRON_END
-  value: "0 21 * * 1-5"
+  value: "0 17 * * 1-5"
 objects:
 
 # OpenShell SandboxTemplate + SandboxWarmPool replace the bot Deployment. The
@@ -121,6 +127,8 @@ objects:
           env:
           - name: BOT_LABEL
             value: ${BOT_LABEL}
+          - name: BOT_EXECUTION_ENGINE
+            value: ${BOT_EXECUTION_ENGINE}
           - name: BOT_MEMORY_URL
             value: http://devbot-memory-server:8080/mcp
           - name: BOT_MEMORY_HEALTH_URL
