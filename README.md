@@ -1,4 +1,4 @@
-# cve-bot-instance
+# stolos-bot-instance
 
 Custom bot runner built on [dev-bot](https://github.com/RedHatInsights/platform-frontend-ai-dev).
 
@@ -6,7 +6,7 @@ Custom bot runner built on [dev-bot](https://github.com/RedHatInsights/platform-
 
 ```bash
 git submodule update --init --recursive
-podman build -f dev-bot/Dockerfile.runner -t cve-bot-instance:local .
+podman build -f dev-bot/Dockerfile.runner -t stolos-bot-instance:local .
 ```
 
 ## Updating dev-bot
