@@ -25,6 +25,12 @@ parameters:
 - name: REHOR_OPENCODE_MAX_TOOL_CALLS
   description: Optional OpenCode tool-call budget override; empty preserves the image configuration.
   value: ""
+- name: REHOR_MODEL_PROXY_URL
+  description: OpenAI-compatible model gateway URL; used by coordinator/OpenCode runners with rehor-openai providers.
+  value: http://devbot-proxy:8450/v1
+- name: REHOR_MODEL_PROXY_TOKEN
+  description: Non-secret client token for the model gateway; the proxy injects the upstream API key.
+  value: rehor-runtime
 - name: BOT_BOARD_NAME
   value: ""
 - name: BOT_SPRINT_PREFIX
@@ -186,6 +192,12 @@ objects:
             value: ${BOT_CONFIG_PATH}
           - name: REHOR_OPENCODE_MAX_TOOL_CALLS
             value: ${REHOR_OPENCODE_MAX_TOOL_CALLS}
+          # OpenAI-compatible model gateway; only used by rehor-openai providers.
+          - name: REHOR_MODEL_PROXY_URL
+            value: ${REHOR_MODEL_PROXY_URL}
+          # Non-secret client placeholder; the proxy injects the upstream API key.
+          - name: REHOR_MODEL_PROXY_TOKEN
+            value: ${REHOR_MODEL_PROXY_TOKEN}
           - name: BOT_DASHBOARD_URL
             value: http://devbot-memory-server:8080/api/bot-status
           - name: COSTS_API_URL
